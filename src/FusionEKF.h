@@ -1,37 +1,43 @@
 #ifndef FusionEKF_H_
 #define FusionEKF_H_
 
-#include <fstream>
-#include <string>
-#include <vector>
-#include "Eigen/Dense"
-#include "kalman_filter.h"
 #include "measurement_package.h"
+#include "Eigen/Dense"
+#include <vector>
+#include <string>
+#include <fstream>
+#include "kalman_filter.h"
 #include "tools.h"
 
 class FusionEKF {
- public:
+public:
   /**
-   * Constructor.
-   */
+  * Constructor.
+  */
   FusionEKF();
 
   /**
-   * Destructor.
-   */
+  * Destructor.
+  */
   virtual ~FusionEKF();
 
   /**
-   * Run the whole flow of the Kalman Filter from here.
-   */
+  * Run the whole flow of the Kalman Filter from here.
+  */
   void ProcessMeasurement(const MeasurementPackage &measurement_pack);
 
   /**
-   * Kalman Filter update and prediction math lives in here.
-   */
+  * Kalman Filter update and prediction math lives in here.
+  */
   KalmanFilter ekf_;
 
- private:
+  ///* if this is false, laser measurements will be ignored (except for init)
+  bool use_laser_;
+
+  ///* if this is false, radar measurements will be ignored (except for init)
+  bool use_radar_;
+
+private:
   // check whether the tracking toolbox was initialized or not (first measurement)
   bool is_initialized_;
 
@@ -46,4 +52,4 @@ class FusionEKF {
   Eigen::MatrixXd Hj_;
 };
 
-#endif // FusionEKF_H_
+#endif /* FusionEKF_H_ */
